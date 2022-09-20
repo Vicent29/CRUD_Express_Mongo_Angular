@@ -1,1 +1,68 @@
-<p>add-product works!</p>
+<div>
+  <div class="submit-form">
+    <div *ngIf="!submitted">
+      <div class="form-group">
+        <label for="prod_nom">Name product</label>
+        <input
+          type="text"
+          class="form-control"
+          id="prod_nom"
+          required
+          [(ngModel)]="product.prod_nom"
+          name="prod_nom"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="id_prod_typ">Type Product</label>
+        <input
+          class="form-control"
+          id="id_prod_typ"
+          required
+          [(ngModel)]="product.id_prod_typ"
+          name="id_prod_typ"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="prod_desc">Description Product</label>
+        <input
+          class="form-control"
+          id="prod_desc"
+          required
+          [(ngModel)]="product.prod_desc"
+          name="prod_desc"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="precio">Price</label>
+        <input
+          class="form-control"
+          id="precio"
+          required
+          [(ngModel)]="product.precio"
+          name="precio"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="id_prod_cat">Category Product</label>
+        <input
+          class="form-control"
+          id="id_prod_cat"
+          required
+          [(ngModel)]="product.id_prod_cat"
+          name="id_prod_cat"
+        />
+      </div>
+
+      <button (click)="saveProduct()" class="btn btn-success">Submit</button>
+    </div>
+
+    <div *ngIf="submitted">
+      <h4>Product was submitted successfully!</h4>
+      <button class="btn btn-success" (click)="newProduct()">Add</button>
+    </div>
+  </div>
+</div>
