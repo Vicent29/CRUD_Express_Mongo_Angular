@@ -50,4 +50,4 @@ variables.env
 
 # Secret
 
-./app/config/db.config.js
+app/config
