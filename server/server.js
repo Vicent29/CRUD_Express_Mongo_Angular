@@ -32,6 +32,7 @@ app.get('/', (req, res) => {
 });
 
 require('./app/routes/product.routes.js')(app);
+require('./app/routes/category.routes.js')(app);
 
 // listen for requests
 app.listen(3000, () => {
