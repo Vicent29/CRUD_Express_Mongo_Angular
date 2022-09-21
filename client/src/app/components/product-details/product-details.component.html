@@ -1,16 +1,14 @@
 <div *ngIf="viewMode; else editable">
     <div *ngIf="currentProduct.id">
-      <h4>Product</h4>
+      <h4>Product SV-Second Hand</h4>
       <div>
-        <label><strong>Title:</strong></label> {{ currentProduct.prod_nom }}
+        <label><strong>Name product: </strong></label> {{ currentProduct.prod_nom }}
       </div>
       <div>
-        <label><strong>Description:</strong></label>
-        {{ currentProduct.prod_desc }}
+        <label><strong>Price: {{ currentProduct.precio }} €</strong></label>
       </div>
       <div>
-        <label><strong>Status:</strong></label>
-        {{ currentProduct.id_prod_typ }}
+        <label><strong>Category {{ currentProduct.prod_nom }}: </strong></label> {{ currentProduct.id_prod_cat }}
       </div>
   
       <a
@@ -32,7 +30,7 @@
       <h4>Product</h4>
       <form>
         <div class="form-group">
-          <label for="prod_nom">Title</label>
+          <label for="prod_nom">Product Name:: </label>
           <input
             type="text"
             class="form-control"
@@ -42,37 +40,36 @@
           />
         </div>
         <div class="form-group">
-          <label for="prod_desc">Description</label>
+          <label for="id_prod_typ">Type product: </label>
           <input
             type="text"
             class="form-control"
-            id="prod_desc"
-            [(ngModel)]="currentProduct.prod_desc"
-            name="prod_desc"
+            id="id_prod_typ"
+            [(ngModel)]="currentProduct.id_prod_typ"
+            name=" id_prod_typ"
           />
         </div>
-  
-        <!-- <div class="form-group">
-          <label><strong>Status:</strong></label>
-          {{ currentTutorial.published ? "Published" : "Pending" }}
-        </div> -->
+        <div class="form-group">
+          <label for="precio">Price: </label>
+          <input
+            type="text"
+            class="form-control"
+            id="precio"
+            [(ngModel)]="currentProduct.precio"
+            name="precio"
+          />
+        </div>
+        <div class="form-group">
+          <label for="id_prod_cat">Catategory Product: </label>
+          <input
+            type="text"
+            class="form-control"
+            id="id_prod_cat"
+            [(ngModel)]="currentProduct.id_prod_cat"
+            name="id_prod_cat"
+          />
+        </div>
       </form>
-<!--   
-      <button
-        class="badge badge-primary mr-2"
-        *ngIf="currentTutorial.published"
-        (click)="updatePublished(false)"
-      >
-        UnPublish
-      </button> -->
-      <!-- <button
-        *ngIf="!currentTutorial.published"
-        class="badge badge-primary mr-2"
-        (click)="updatePublished(true)"
-      >
-        Publish
-      </button> -->
-  
       <button class="badge badge-danger mr-2" (click)="deleteProduct()">
         Delete
       </button>
