@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-product',
@@ -18,7 +19,10 @@ export class AddProductComponent implements OnInit {
   };
   submitted = false;
 
-  constructor(private productService: ProductService) { }
+  constructor(
+    private productService: ProductService,
+    private toastrService: ToastrService
+    ) { }
 
   ngOnInit(): void {
   }
@@ -35,6 +39,7 @@ export class AddProductComponent implements OnInit {
     this.productService.create(data)
       .subscribe({
         next: (res) => {
+          this.toastrService.success('Added successfully!', 'Product added successfully!');
           console.log(res);
           this.submitted = true;
         },
