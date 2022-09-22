@@ -1,0 +1,63 @@
+
+.menu > li{
+	position: relative;
+	display: inline-block;
+}
+
+.menu > li > a{
+	display: block;
+	padding: 15px 20px;
+	color: #ffffff;
+	font-family: 'Open sans';
+	text-decoration: none;
+}
+
+.menu li a:hover{
+	color: #4ab5f7;
+	transition: all .3s;
+    font-weight: bold;
+}
+
+/* Submenu*/
+
+.submenu{
+	position: absolute;
+	background: #000000;
+	width: 120%;
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 1.5s;
+}
+
+.submenu li {
+    list-style: none;
+}
+
+.submenu li a{
+	display: block;
+	padding: 15px;
+	color: #fff;
+	font-family: 'Open sans';
+	text-decoration: none;
+}
+
+.submenu li a:hover{
+	color: #e1a421 !important;
+	transition: all .3s;
+    font-weight: normal !important;
+}
+
+.menu li:hover .submenu{
+	visibility: visible;
+	opacity: 1;
+}
+
+/* NAVABAR */
+
+.bg-dark {
+    background-color: black !important;
+}
+
+.navbar-brand {
+    margin-top: -1%;
+}

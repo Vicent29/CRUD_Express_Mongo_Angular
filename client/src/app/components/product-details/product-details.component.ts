@@ -58,7 +58,6 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.update(this.currentProduct.id, data)
       .subscribe({
         next: (res) => {
-          // this.currentProduct.published = status;
           this.message = res.message ? res.message : 'The status was updated successfully!';
         },
         error: (e) => console.error(e)
