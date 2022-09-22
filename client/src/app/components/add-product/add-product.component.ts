@@ -39,8 +39,7 @@ export class AddProductComponent implements OnInit {
     this.productService.create(data)
       .subscribe({
         next: (res) => {
-          this.toastrService.success('Added successfully!', 'Product added successfully!');
-          console.log(res);
+          this.toastrService.success('Added successfully!','The '+ data.id_prod_typ +' '+ data.prod_nom + ' added successfully!');
           this.submitted = true;
         },
         error: (e) => console.error(e)

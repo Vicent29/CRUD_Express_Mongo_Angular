@@ -26,7 +26,6 @@ export class ProductListComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.product = data;
-          console.log(data);
         },
         error: (e) => console.error(e)
       });
@@ -47,7 +46,6 @@ export class ProductListComponent implements OnInit {
     this.productService.deleteAll()
       .subscribe({
         next: (res) => {
-          console.log(res);
           this.refreshList();
         },
         error: (e) => console.error(e)
@@ -62,7 +60,6 @@ export class ProductListComponent implements OnInit {
       .subscribe({        
         next: (data) => {
           this.product = data;
-          console.log(data);
         },
         error: (e) => console.error(e)
       });

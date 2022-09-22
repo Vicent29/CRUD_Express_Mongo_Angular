@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from 'src/app/models/product.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-details',
@@ -25,6 +26,7 @@ export class ProductDetailsComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
+    private toastrService: ToastrService,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -39,7 +41,6 @@ export class ProductDetailsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.currentProduct = data;
-          console.log(data);
         },
         error: (e) => console.error(e)
       });
@@ -53,15 +54,12 @@ export class ProductDetailsComponent implements OnInit {
       precio: this.currentProduct.precio,
       id_prod_cat: this.currentProduct.id_prod_cat
     };
-
     this.message = '';
-
     this.productService.update(this.currentProduct.id, data)
       .subscribe({
         next: (res) => {
-          console.log(res);
           // this.currentProduct.published = status;
-          // this.message = res.message ? res.message : 'The status was updated successfully!';
+          this.message = res.message ? res.message : 'The status was updated successfully!';
         },
         error: (e) => console.error(e)
       });
@@ -73,7 +71,7 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.update(this.currentProduct.id, this.currentProduct)
       .subscribe({
         next: (res) => {
-          console.log(res);
+          this.toastrService.success("The "+ this.currentProduct.id_prod_typ +" "+ this.currentProduct.prod_nom + " was updated successfully!");
           this.message = res.message ? res.message : 'This product was updated successfully!';
         },
         error: (e) => console.error(e)
@@ -84,7 +82,7 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.delete(this.currentProduct.id)
       .subscribe({
         next: (res) => {
-          console.log(res);
+          this.toastrService.success("The "+ this.currentProduct.id_prod_typ +" "+ this.currentProduct.prod_nom + " was deleted successfully!");
           this.router.navigate(['/product']);
         },
         error: (e) => console.error(e)

@@ -15,8 +15,6 @@ const routes: Routes = [
   // { path: 'add_category', component: AddCategoryComponent },
   // { path: 'category', component: CategoryListComponent },
   // { path: 'category/:id', component: CategoryDetailsComponent }
-
-
 ];
 
 @NgModule({
