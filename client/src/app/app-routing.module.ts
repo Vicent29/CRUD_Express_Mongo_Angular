@@ -5,14 +5,14 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { AddProductComponent } from './components/add-product/add-product.component';
 // import { CategoryListComponent } from './components/category-list/category-list.component';
 // import { CategoryDetailsComponent } from './components/category-details/category-details.component';
-// import { AddCategoryComponent } from './components/add-category/add-category.component';
+import { AddCategoryComponent } from './components/add-category/add-category.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'product', pathMatch: 'full' },
   { path: 'product', component: ProductListComponent },
   { path: 'product/:id', component: ProductDetailsComponent },
   { path: 'add_prod', component: AddProductComponent },
-  // { path: 'add_category', component: AddCategoryComponent },
+  { path: 'add_cat', component: AddCategoryComponent },
   // { path: 'category', component: CategoryListComponent },
   // { path: 'category/:id', component: CategoryDetailsComponent }
 ];

@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { AddProductComponent } from './components/add-product/add-product.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
-// import { AddCategoryComponent } from './components/add-product/add-product.component';
+import { AddCategoryComponent } from './components/add-category/add-category.component';
 // import { CategoryDetailsComponent } from './components/product-details/product-details.component';
 // import { CategoryListComponent } from './components/product-list/product-list.component';
 
@@ -21,7 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AddProductComponent,
     ProductDetailsComponent,
     ProductListComponent,
-    // AddCategoryComponent,
+    AddCategoryComponent,
     // CategoryDetailsComponent,
     // CategoryListComponent
   ],
