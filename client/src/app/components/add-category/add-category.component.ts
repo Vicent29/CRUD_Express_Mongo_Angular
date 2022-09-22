@@ -33,7 +33,7 @@ export class AddCategoryComponent implements OnInit {
     this.categoryService.create(data)
       .subscribe({
         next: (res) => {
-          this.toastrService.success('Added successfully!','The '+ data.id_cat +' '+ data.cat_name + ' added successfully!');
+          this.toastrService.success('Added successfully!','The category '+ data.cat_name + ' added successfully!');
           this.submitted = true;
         },
         error: (e) => console.error(e)
