@@ -77,12 +77,12 @@ exports.update = async (req, res) => {
     category.id_cat = id_cat;
     category.cat_name = cat_name;
 
-    category = await Category.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    category = await Category.findByIdAndUpdate(req.params.id, req.body, { useFindAndModify: false })
     res.json(category)
 
   } catch (error) {
     res.status(404).send({
-      message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found!`
+      message: `Cannot update Tutorial with id=${req.params.id}. Maybe Tutorial was not found!`
     });
   }
 };
