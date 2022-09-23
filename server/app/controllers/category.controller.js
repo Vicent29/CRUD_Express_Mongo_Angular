@@ -2,143 +2,140 @@ const { category } = require("../models");
 const db = require("../models");
 const Category = db.category;
 
-// Create and Save a new Tutorial
-exports.create = (req, res) => {
+// Create and Save a new Category
+exports.create = async (req, res) => {
+
   // Validate request
   if (!req.body.id_cat) {
     res.status(400).send({ message: "Content can not be empty!" });
     return;
   }
 
-  // Create a Tutorial
-  const category = new Category({
-    id_cat: req.body.id_cat || null,
-    cat_name: req.body.cat_name || null,
-  });
-  console.log(category)
-
-  // Save Tutorial in the database
-  category
-    .save(category)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Tutorial."
-      });
+  try {
+    // Create a Category
+    const category = new Category({
+      id_cat: req.body.id_cat || null,
+      cat_name: req.body.cat_name || null,
     });
+
+    await category.save();
+    res.send(category);
+  } catch (error) {
+    res.status(500).send('Hubo un error');
+  }
 };
 
 // Retrieve all Tutorials from the database.
-exports.findAll = (req, res) => {
-  const id_cat = req.body.id_cat;
-  var condition = id_cat ? { id_cat: { $regex: new RegExp(id_cat), $options: "i" } } : {};
+exports.findAll = async (req, res) => {
+  try {
+    const id_cat = req.body.id_cat;
+    var condition = id_cat ? { id_cat: { $regex: new RegExp(id_cat), $options: "i" } } : {};
 
-  Category.find(condition)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
+    const category = await Category.find(condition);
+    res.json(category)
+  } catch (error) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving tutorials."
     });
+  }
 };
 
 // Find a single Tutorial with an id
-exports.findOne = (req, res) => {
-  const id = req.params.id;
+exports.findOne = async (req, res) => {
 
-  Category.findById(id)
-    .then(data => {
-      if (!data)
-        res.status(404).send({ message: "Not found Tutorial with id " + id });
-      else res.send(data);
-    })
-    .catch(err => {
-      res
-        .status(500)
-        .send({ message: "Error retrieving Tutorial with id=" + id });
-    });
+  try {
+    let category = await Category.findById(req.params.id);
+
+    if (!category) {
+      res.status(404).json({ msg: 'No existe la categoria' })
+    }
+
+    res.json(category)
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Hubo un error');
+  }
+
 };
 
 // Update a Tutorial by the id in the request
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   if (!req.body) {
     return res.status(400).send({
       message: "Data to update can not be empty!"
     });
   }
 
-  const id = req.params.id;
+  try {
+    const { id_cat, cat_name } = req.body;
+    let category = await Category.findById(req.params.id);
 
-  Category.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-    .then(data => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found!`
-        });
-      } else res.send({ message: "Tutorial was updated successfully." });
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating Tutorial with id=" + id
-      });
+    if (!category) {
+      res.status(404).json({ msg: 'No existe el category' })
+    }
+
+    category.id_cat = id_cat;
+    category.cat_name = cat_name;
+
+    category = await Category.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    res.json(category)
+
+  } catch (error) {
+    res.status(404).send({
+      message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found!`
     });
+  }
 };
 
 // Delete a Tutorial with the specified id in the request
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
   const id = req.params.id;
 
-  Category.findByIdAndRemove(id, { useFindAndModify: false })
-    .then(data => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`
-        });
-      } else {
-        res.send({
-          message: "Tutorial was deleted successfully!"
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Could not delete Tutorial with id=" + id
-      });
+  try {
+
+    let category = await Category.findById(req.params.id);
+
+    if (!category) {
+      res.status(404).json({ msg: 'No existe la categoria' })
+    }
+
+    await Category.findByIdAndRemove(id, { useFindAndModify: false })
+
+    res.send({ msg: 'Category eliminado con éxito!' })
+
+
+  } catch (error) {
+    res.status(404).send({
+      message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`
     });
+  }
 };
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-  Category.deleteMany({})
-    .then(data => {
-      res.send({
-        message: `${data.deletedCount} Tutorials were deleted successfully!`
-      });
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all tutorials."
-      });
+
+  try {
+    Category.deleteMany({})
+    res.send({ message: 'Categories were deleted successfully' })
+  } catch (error) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while removing all tutorials."
     });
-};
+  }
+}
 
 // Find all published Tutorials
-exports.findAllPublished = (req, res) => {
-  Category.find({ published: true })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
+exports.findAllPublished = async (req, res) => {
+  try {
+    Category.find({ published: true })
+    res.json(data);
+  } catch (error) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving tutorials."
     });
+  }
 };
