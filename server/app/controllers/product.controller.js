@@ -117,17 +117,17 @@ exports.delete = async (req, res) => {
 
 // Delete all Products from the database.
 exports.deleteAll = async (req, res) => {
-
   try {
-    Product.deleteMany({})
-    res.send({ message: 'Product were deleted successfully' })
+    const deleteALL = await Product.collection.drop();
+    res.send({ msg: 'Product were deleted successfully' })
   } catch (error) {
+    console.log(error);
     res.status(500).send({
       message:
         err.message || "Some error occurred while removing all product."
     });
   }
-  }
+}
 
 // Find all published Products
 exports.findAllPublished = (req, res) => {

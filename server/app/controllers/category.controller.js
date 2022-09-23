@@ -4,7 +4,6 @@ const Category = db.category;
 
 // Create and Save a new Category
 exports.create = async (req, res) => {
-
   // Validate request
   if (!req.body.id_cat) {
     res.status(400).send({ message: "Content can not be empty!" });
@@ -17,7 +16,6 @@ exports.create = async (req, res) => {
       id_cat: req.body.id_cat || null,
       cat_name: req.body.cat_name || null,
     });
-
     await category.save();
     res.send(category);
   } catch (error) {
@@ -25,7 +23,7 @@ exports.create = async (req, res) => {
   }
 };
 
-// Retrieve all Tutorials from the database.
+// Retrieve all Categories from the database.
 exports.findAll = async (req, res) => {
   try {
     const id_cat = req.body.id_cat;
@@ -113,16 +111,18 @@ exports.delete = async (req, res) => {
   }
 };
 
-// Delete all Tutorials from the database.
-exports.deleteAll = (req, res) => {
+// Delete all Categories from the database.
+
+exports.deleteAll = async (req, res) => {
 
   try {
-    Category.deleteMany({})
-    res.send({ message: 'Categories were deleted successfully' })
+    const deleteALL = await Category.collection.drop();
+    res.send({ msg: 'Category were deleted successfully' })
   } catch (error) {
+    console.log(error);
     res.status(500).send({
       message:
-        err.message || "Some error occurred while removing all tutorials."
+        err.message || "Some error occurred while removing all product."
     });
   }
 }
