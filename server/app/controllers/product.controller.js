@@ -1,6 +1,7 @@
 const { product } = require("../models");
 const db = require("../models");
 const Product = db.product;
+const serializeProduct = require("./serializers/product_serializers")
 
 // Create and Save a new Product
 exports.create = async (req, res) => {
@@ -26,40 +27,41 @@ exports.create = async (req, res) => {
   }
 }
 
-// Retrieve all Products from the database.
-exports.findAll = (req, res) => {
-  const prod_nom = req.body.prod_nom;
-  var condition = prod_nom ? { prod_nom: { $regex: new RegExp(prod_nom), $options: "i" } } : {};
+// Find all Products from the database.
+exports.findAll = async (req, res) => {
 
-  Product.find(condition)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
+  try {
+    const prod_nom = req.body.prod_nom;
+    var condition = prod_nom ? { prod_nom: { $regex: new RegExp(prod_nom), $options: "i" } } : {};
+
+    const data_producto = await Product.find(condition);
+    res.json(serializeProduct.serializeAllProcucts(data_producto));
+
+  } catch (error) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving tutorials."
     });
+  }
 };
 
-// Find a single Tutorial with an id
-exports.findOne = (req, res) => {
+// Find a one Product with an id
+exports.findOne = async (req, res) => {
   const id = req.params.id;
-
-  Product.findById(id)
-    .then(data => {
-      if (!data)
-        res.status(404).send({ message: "Not found Tutorial with id " + id });
-      else res.send(data);
-    })
-    .catch(err => {
-      res
-        .status(500)
-        .send({ message: "Error retrieving Tutorial with id=" + id });
-    });
+  try {
+    let product = await Product.findById(id)
+    if (!product)
+      res.status(404).send({ message: "Not found Tutorial with id " + id });
+    else {
+      res.send(product);
+      // res.json(serializeProduct.serializeOneProcuct(product));
+    } 
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Error retrieving Tutorial with id=" + id });
+  }
 };
-
 // Update a Products by the id in the request
 exports.update = async (req, res) => {
   if (!req.body) {

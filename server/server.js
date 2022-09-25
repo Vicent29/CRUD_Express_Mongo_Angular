@@ -1,16 +1,20 @@
+const dotenv = require("dotenv").config()
 const express = require('express');
-const bodyParser = require('body-parser');
-
 const cors = require("cors");
+const connectdb = require("./app/config/database.config")
+const mongoose = require('mongoose');
+const logger = require('morgan');
+
+const bodyParser = require('body-parser');
 
 // create express app
 const app = express();
-
 var corsOptions = {
-    origin: "http://localhost:4200"
+    origin: process.env.CORSURL || "http://localhost:4200"
 };
 
 app.use(cors(corsOptions));
+app.use(logger('dev'));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -19,13 +23,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Configuring the database
-const dbConfig = require('./app/config/database.config.js');
-const mongoose = require('mongoose');
-
+const dbConfig=process.env.MONGO_URI;
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-mongoose.connect(dbConfig.url, {
+mongoose.connect(dbConfig, {
     useNewUrlParser: true
 }).then(() => {
     console.log("Successfully connected to the database");
@@ -43,6 +45,7 @@ require('./app/routes/product.routes.js')(app);
 require('./app/routes/category.routes.js')(app);
 
 // listen for requests
-app.listen(3000, () => {
+const PORT= process.env.PORT
+app.listen(PORT, () => {
     console.log("Server is listening on port 3000");
 });
