@@ -1,5 +1,5 @@
 export class Product {
-    id?: any;
+    slug?: any;
     prod_nom?: String;
     id_prod_typ?: String;
     prod_desc?: String;

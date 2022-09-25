@@ -55,7 +55,7 @@ export class ProductDetailsComponent implements OnInit {
       id_prod_cat: this.currentProduct.id_prod_cat
     };
     this.message = '';
-    this.productService.update(this.currentProduct.id, data)
+    this.productService.update(this.currentProduct.slug, data)
       .subscribe({
         next: (res) => {
           this.message = res.message ? res.message : 'The status was updated successfully!';
@@ -67,7 +67,7 @@ export class ProductDetailsComponent implements OnInit {
   updateProduct(): void {
     this.message = '';
 
-    this.productService.update(this.currentProduct.id, this.currentProduct)
+    this.productService.update(this.currentProduct.slug, this.currentProduct)
       .subscribe({
         next: (res) => {
           this.toastrService.success("The "+ this.currentProduct.id_prod_typ +" "+ this.currentProduct.prod_nom + " was updated successfully!");
@@ -78,7 +78,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   deleteProduct(): void {
-    this.productService.delete(this.currentProduct.id)
+    this.productService.delete(this.currentProduct.slug)
       .subscribe({
         next: (res) => {
           this.toastrService.success("The "+ this.currentProduct.id_prod_typ +" "+ this.currentProduct.prod_nom + " was deleted successfully!");

@@ -1,91 +1,62 @@
 <div *ngIf="viewMode; else editable">
-    <div *ngIf="currentProduct.id">
-      <h4>Product SV-Second Hand</h4>
-      <div>
-        <label><strong>Name product: </strong></label> {{ currentProduct.prod_nom }}
-      </div>
-      <div>
-        <label><strong>Price:</strong></label> {{ currentProduct.precio }} €
-      </div>
-      <div>
-        <label><strong>Category {{ currentProduct.prod_nom }}: </strong></label> {{ currentProduct.id_prod_cat }}
-      </div>
-  
-      <a
-        class="badge badge-warning"
-        routerLink="/product/{{ currentProduct.id }}"
-      >
-        Edit
-      </a>
+  <div *ngIf="currentProduct.slug">
+    <h4>Product SV-Second Hand</h4>
+    <div>
+      <label><strong>Name product: </strong></label> {{ currentProduct.prod_nom }}
     </div>
-  
-    <div *ngIf="!currentProduct">
-      <br />
-      <p>Please click on a Product...</p>
+    <div>
+      <label><strong>Price:</strong></label> {{ currentProduct.precio }} €
     </div>
+    <div>
+      <label><strong>Product {{ currentProduct.prod_nom }}: </strong></label> {{ currentProduct.id_prod_cat }}
+    </div>
+
+    <a class="badge badge-warning" routerLink="/product/{{ currentProduct.slug }}">
+      Edit
+    </a>
   </div>
-  
-  <ng-template #editable>
-    <div *ngIf="currentProduct.id" class="edit-form">
-      <h4>Product</h4>
-      <form>
-        <div class="form-group">
-          <label for="prod_nom">Product Name:: </label>
-          <input
-            type="text"
-            class="form-control"
-            id="prod_nom"
-            [(ngModel)]="currentProduct.prod_nom"
-            name="prod_nom"
-          />
-        </div>
-        <div class="form-group">
-          <label for="id_prod_typ">Type product: </label>
-          <input
-            type="text"
-            class="form-control"
-            id="id_prod_typ"
-            [(ngModel)]="currentProduct.id_prod_typ"
-            name=" id_prod_typ"
-          />
-        </div>
-        <div class="form-group">
-          <label for="precio">Price: </label>
-          <input
-            type="text"
-            class="form-control"
-            id="precio"
-            [(ngModel)]="currentProduct.precio"
-            name="precio"
-          />
-        </div>
-        <div class="form-group">
-          <label for="id_prod_cat">Catategory Product: </label>
-          <input
-            type="text"
-            class="form-control"
-            id="id_prod_cat"
-            [(ngModel)]="currentProduct.id_prod_cat"
-            name="id_prod_cat"
-          />
-        </div>
-      </form>
-      <button class="badge badge-danger mr-2" (click)="deleteProduct()">
-        Delete
-      </button>
-  
-      <button
-        type="submit"
-        class="badge badge-success mb-2"
-        (click)="updateProduct()"
-      >
-        Update
-      </button>
-      <p>{{ message }}</p>
-    </div>
-  
-    <div *ngIf="!currentProduct.id">
-      <br />
-      <p>Cannot access this Product...</p>
-    </div>
-  </ng-template>
+
+  <div *ngIf="!currentProduct">
+    <br />
+    <p>Please click on a Product...</p>
+  </div>
+</div>
+
+<ng-template #editable>
+  <div *ngIf="currentProduct.slug" class="edit-form">
+    <h4>Product</h4>
+    <form>
+      <div class="form-group">
+        <label for="prod_nom">Product Name:: </label>
+        <input type="text" class="form-control" id="prod_nom" [(ngModel)]="currentProduct.prod_nom" name="prod_nom" />
+      </div>
+      <div class="form-group">
+        <label for="id_prod_typ">Type product: </label>
+        <input type="text" class="form-control" id="id_prod_typ" [(ngModel)]="currentProduct.id_prod_typ"
+          name=" id_prod_typ" />
+      </div>
+      <div class="form-group">
+        <label for="precio">Price: </label>
+        <input type="text" class="form-control" id="precio" [(ngModel)]="currentProduct.precio" name="precio" />
+      </div>
+      <div class="form-group">
+        <label for="id_prod_cat">Catategory Product: </label>
+        <input type="text" class="form-control" id="id_prod_cat" [(ngModel)]="currentProduct.id_prod_cat"
+          name="id_prod_cat" />
+      </div>
+    </form>
+    <button class="badge badge-danger mr-2" (click)="deleteProduct()">
+      Delete
+    </button>
+
+    <button type="submit" class="badge badge-success mb-2" (click)="updateProduct()">
+      Update
+    </button>
+    <p>{{ message }}</p>
+  </div>
+
+  <div *ngIf="!currentProduct.slug">
+    <br />
+    <p>Cannot access this Product...</p>
+  </div>
+</ng-template>

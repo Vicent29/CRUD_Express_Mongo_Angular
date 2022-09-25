@@ -49,13 +49,13 @@ exports.findAll = async (req, res) => {
 exports.findOne = async (req, res) => {
   const id = req.params.id;
   try {
-    let product = await Product.findById(id)
+    let product = await Product.findOne({ slug: id })
     if (!product)
       res.status(404).send({ message: "Not found Tutorial with id " + id });
     else {
       res.send(product);
       // res.json(serializeProduct.serializeOneProcuct(product));
-    } 
+    }
   } catch (error) {
     res
       .status(500)
@@ -70,26 +70,22 @@ exports.update = async (req, res) => {
     });
   }
   try {
-    const { prod_nom, id_prod_typ, prod_desc, precio, id_prod_cat } = req.body;
+    let old_product = await Product.findOne({ slug: req.params.id });
+    // console.log(product);
+    if (old_product.prod_nom !== req.body.prod_nom && req.body.prod_nom !== undefined) {
+      old_product.slug = null;
+    }//end if
+    old_product.prod_nom = req.body.prod_nom || old_product.prod_nom;
+    old_product.id_prod_typ = req.body.id_prod_typ || old_product.id_prod_typ;
+    old_product.precio = req.body.precio || old_product.precio;
+    old_product.id_prod_cat = req.body.id_prod_cat || old_product.id_prod_cat;
 
-    let product = await Category.findById(req.params.id);
-
-    if (!product) {
-      res.status(404).json({ msg: 'No existe el category' })
-    }
-
-    product.prod_nom = prod_nom;
-    product.id_prod_typ = id_prod_typ;
-    product.prod_desc = prod_desc;
-    product.precio = precio;
-    product.id_prod_cat = id_prod_cat;
-
-    product = await Product.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-    res.json(product)
-
+    const product = await old_product.save();
+    if (!product) { res.status(404).json(FormatError("Product not found", res.statusCode)); }
+    res.json({ msg: "Product updated" })
   } catch (error) {
     res.status(404).send({
-      message: `Cannot update Product with id=${id}. Maybe Product was not found!`
+      message: `Cannot update Product with id=${req.params.id}. Maybe Product was not found!`
     });
   }
 };
@@ -99,13 +95,11 @@ exports.delete = async (req, res) => {
   const id = req.params.id;
   try {
 
-    let product = await Product.findById(req.params.id);
+    let product = await Product.findOneAndDelete({slug : req.params.id});
 
     if (!product) {
-      res.status(404).json({ msg: 'No existe la categoria' })
+      res.status(404).json({ msg: 'No existe el producto' })
     }
-
-    await Product.findByIdAndRemove(id, { useFindAndModify: false })
 
     res.send({ msg: 'Product eliminado con éxito!' })
 
