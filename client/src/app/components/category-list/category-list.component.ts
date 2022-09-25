@@ -13,7 +13,7 @@ export class CategoryListComponent implements OnInit {
   category?: Category[];
   currentCategory: Category = {};
   currentIndex = -1;
-  prod_nom = '';
+  cat_name = '';
 
   constructor(private categoryService: CategoryService) { }
 
@@ -56,7 +56,7 @@ export class CategoryListComponent implements OnInit {
     this.currentCategory = {};
     this.currentIndex = -1;
 
-    this.categoryService.findByTitle(this.prod_nom)
+    this.categoryService.findByTitle(this.cat_name)
       .subscribe({        
         next: (data) => {
           this.category = data;

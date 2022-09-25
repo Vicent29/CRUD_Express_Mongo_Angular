@@ -49,7 +49,7 @@ export class CategoryDetailsComponent implements OnInit {
       cat_name: this.currentCategory.cat_name
     };
     this.message = '';
-    this.categoryService.update(this.currentCategory.id, data)
+    this.categoryService.update(this.currentCategory.slug, data)
       .subscribe({
         next: (res) => {
           this.message = res.message ? res.message : 'The status was updated successfully!';
@@ -61,7 +61,7 @@ export class CategoryDetailsComponent implements OnInit {
   updateCategory(): void {
     this.message = '';
 
-    this.categoryService.update(this.currentCategory.id, this.currentCategory)
+    this.categoryService.update(this.currentCategory.slug, this.currentCategory)
       .subscribe({
         next: (res) => {
           this.toastrService.success("The "+ this.currentCategory.cat_name +" was updated successfully!");
@@ -72,7 +72,7 @@ export class CategoryDetailsComponent implements OnInit {
   }
 
   deleteCategory(): void {
-    this.categoryService.delete(this.currentCategory.id)
+    this.categoryService.delete(this.currentCategory.slug)
       .subscribe({
         next: (res) => {
           this.toastrService.success("The "+ this.currentCategory.cat_name +" was deleted successfully!");

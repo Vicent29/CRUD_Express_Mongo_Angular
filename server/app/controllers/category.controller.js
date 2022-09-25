@@ -41,9 +41,8 @@ exports.findAll = async (req, res) => {
 
 // Find a single Tutorial with an id
 exports.findOne = async (req, res) => {
-
   try {
-    let category = await Category.findById(req.params.id);
+    let category = await Category.findOne({ slug: req.params.id });
 
     if (!category) {
       res.status(404).json({ msg: 'No existe la categoria' })
@@ -67,18 +66,16 @@ exports.update = async (req, res) => {
   }
 
   try {
-    const { id_cat, cat_name } = req.body;
-    let category = await Category.findById(req.params.id);
-
-    if (!category) {
-      res.status(404).json({ msg: 'No existe el category' })
-    }
-
-    category.id_cat = id_cat;
-    category.cat_name = cat_name;
-
-    category = await Category.findByIdAndUpdate(req.params.id, req.body, { useFindAndModify: false })
-    res.json(category)
+    let old_category = await Category.findOne({ slug: req.params.id });
+    // console.log(category);
+    if (old_category.cat_name !== req.body.cat_name && req.body.cat_name !== undefined) {
+      old_category.slug = null;
+    }//end if
+    old_category.cat_name = req.body.cat_name || old_category.cat_name;
+    old_category.id_cat = req.body.id_cat || old_category.id_cat;
+    const category = await old_category.save();
+    if (!category) { res.status(404).json(FormatError("Category not found", res.statusCode)); }
+    res.json({ msg: "Category updated" })
 
   } catch (error) {
     res.status(404).send({
@@ -93,13 +90,11 @@ exports.delete = async (req, res) => {
 
   try {
 
-    let category = await Category.findById(req.params.id);
+    let category = await Category.findOneAndDelete({slug : req.params.id});
 
     if (!category) {
       res.status(404).json({ msg: 'No existe la categoria' })
     }
-
-    await Category.findByIdAndRemove(id, { useFindAndModify: false })
 
     res.send({ msg: 'Category eliminado con éxito!' })
 
