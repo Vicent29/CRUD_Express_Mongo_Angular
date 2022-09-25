@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { ToastrService } from 'ngx-toastr';
+import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-category',
@@ -10,42 +12,46 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AddCategoryComponent implements OnInit {
 
-  category: Category = {
-    id_cat: '',
-    cat_name: ''
-  };
-  submitted = false;
+  form: FormGroup = new FormGroup({
+    id_cat: new FormControl(''),
+    cat_name: new FormControl('')
+  });
+  firstSubmit: Boolean = true;
 
   constructor(
     private categoryService: CategoryService,
-    private toastrService: ToastrService
-    ) { }
+    private toastrService: ToastrService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
+    this.form = this.formBuilder.group(
+      {
+        id_cat: ['', [Validators.required, Validators.minLength(4)]],
+        cat_name: ['', [Validators.required, Validators.minLength(4)]]
+      },
+    );
   }
 
-  saveCategory(): void {
-    const data = {
-      id_cat: this.category.id_cat,
-      cat_name: this.category.cat_name
-    };
-
-    this.categoryService.create(data)
-      .subscribe({
-        next: (res) => {
-          this.toastrService.success('Added successfully!','The category '+ data.cat_name + ' added successfully!');
-          this.submitted = true;
-        },
-        error: (e) => console.error(e)
-      });
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
   }
 
-  newCategory(): void {
-    this.submitted = false;
-    this.category = {
-      id_cat: '',
-      cat_name: ''
-    };
+  addCategory(): void {
+    console.log(this.form.controls);
+    this.firstSubmit = false;
+    // this.firstSubmit = false;
+    if (this.form.valid) {
+      this.categoryService.create(this.form.value)
+        .subscribe({
+          next: (res) => {
+            this.toastrService.success("This category has been aded");
+            this.router.navigate(['/category']);
+          },
+          error: (e) => this.toastrService.error("Can't add this category")
+        });
+    }
   }
 
 }

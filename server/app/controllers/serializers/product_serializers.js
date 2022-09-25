@@ -20,6 +20,7 @@ module.exports = {
         for (let i = 0; i < product.length; i++) {
             data_prod.push({
                 id: product[i]._id,
+                slug: product[i].slug,
                 prod_nom: product[i].prod_nom || null,
                 precio: product[i].precio || null,
                 id_prod_typ: product[i].id_prod_typ || null,
