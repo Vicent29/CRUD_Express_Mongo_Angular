@@ -1,6 +1,7 @@
 const { category } = require("../models");
 const db = require("../models");
 const Category = db.category;
+const serializeCategory = require('./serializers/serializers_category');
 
 // Create and Save a new Category
 exports.create = async (req, res) => {
@@ -23,23 +24,23 @@ exports.create = async (req, res) => {
   }
 };
 
-// Retrieve all Categories from the database.
+// Find all Categories from the database.
 exports.findAll = async (req, res) => {
   try {
     const id_cat = req.body.id_cat;
     var condition = id_cat ? { id_cat: { $regex: new RegExp(id_cat), $options: "i" } } : {};
 
     const category = await Category.find(condition);
-    res.json(category)
+    res.json(serializeCategory.serializeAllCategories(category));
   } catch (error) {
     res.status(500).send({
       message:
-        err.message || "Some error occurred while retrieving tutorials."
+        error.message || "Some error occurred while retrieving tutorials."
     });
   }
 };
 
-// Find a single Tutorial with an id
+// Find a one Categoryes with an id
 exports.findOne = async (req, res) => {
   try {
     let category = await Category.findOne({ slug: req.params.id });
@@ -49,6 +50,7 @@ exports.findOne = async (req, res) => {
     }
 
     res.json(category)
+    // res.json(serializeCategory.serializeOneCategory(category));
 
   } catch (error) {
     console.log(error);
@@ -67,10 +69,9 @@ exports.update = async (req, res) => {
 
   try {
     let old_category = await Category.findOne({ slug: req.params.id });
-    // console.log(category);
     if (old_category.cat_name !== req.body.cat_name && req.body.cat_name !== undefined) {
       old_category.slug = null;
-    }//end if
+    }
     old_category.cat_name = req.body.cat_name || old_category.cat_name;
     old_category.id_cat = req.body.id_cat || old_category.id_cat;
     const category = await old_category.save();
@@ -117,7 +118,7 @@ exports.deleteAll = async (req, res) => {
     console.log(error);
     res.status(500).send({
       message:
-        err.message || "Some error occurred while removing all product."
+        err.message || "Some error occurred while removing all category."
     });
   }
 }

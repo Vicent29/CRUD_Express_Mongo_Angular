@@ -38,7 +38,7 @@ mongoose.connect(dbConfig, {
 
 // define a simple route
 app.get('/', (req, res) => {
-    res.json({ "message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes." });
+    res.json({ "message": "Welcome to Secon Hand application. Take notes quickly. Organize and keep track of all your notes." });
 });
 
 require('./app/routes/product.routes.js')(app);
