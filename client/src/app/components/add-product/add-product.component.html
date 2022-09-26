@@ -1,68 +1,58 @@
-<div>
-  <div class="submit-form">
-    <div *ngIf="!submitted">
+<form [formGroup]="form" (ngSubmit)="addProduct()">
+  <div>
+    
+    <div class="submit-form">
+      <!-- Name product -->
       <div class="form-group">
         <label for="prod_nom">Name product</label>
-        <input
-          type="text"
-          class="form-control"
-          id="prod_nom"
-          required
-          [(ngModel)]="product.prod_nom"
-          name="prod_nom"
-        />
+        <input type="text" class="form-control" id="prod_nom" formControlName="prod_nom"
+          [ngClass]="{ 'is-invalid': f['prod_nom'].invalid && !firstSubmit}" name="prod_nom" required />
+        <div *ngIf="f['prod_nom'].value.length == 0 && !firstSubmit" style="color: red;">
+          <div>Name product is required</div>
+        </div><br>
+      </div>
+      <!-- Tye product -->
+      <div class="form-group">
+        <label for="id_prod_typ">Type product</label>
+        <input type="text" class="form-control" id="id_prod_typ" formControlName="id_prod_typ"
+          [ngClass]="{ 'is-invalid': f['id_prod_typ'].invalid && !firstSubmit}" name="id_prod_typ" required />
+
+        <div *ngIf="f['id_prod_typ'].value.length == 0 && !firstSubmit" style="color: red;">
+          <div>Type product is required</div>
+        </div><br>
+      </div>
+      <!-- Description product -->
+      <div class="form-group">
+        <label for="prod_desc">Category name</label>
+        <input type="text" class="form-control" id="prod_desc" formControlName="prod_desc"
+          [ngClass]="{ 'is-invalid': f['prod_desc'].invalid && !firstSubmit}" name="prod_desc" required />
+
+        <div *ngIf="f['prod_desc'].value.length == 0 && !firstSubmit" style="color: red;">
+          <div>Description product is required</div>
+        </div><br>
+      </div>
+      <!-- Price -->
+      <div class="form-group">
+        <label for="precio">Price product</label>
+        <input type="text" class="form-control" id="precio" formControlName="precio"
+          [ngClass]="{ 'is-invalid': f['precio'].invalid && !firstSubmit}" name="precio" required />
+
+        <div *ngIf="f['precio'].value.length == 0 && !firstSubmit" style="color: red;">
+          <div>Add a price for the product</div>
+        </div><br>
       </div>
 
       <div class="form-group">
-        <label for="id_prod_typ">Type Product</label>
-        <input
-          class="form-control"
-          id="id_prod_typ"
-          required
-          [(ngModel)]="product.id_prod_typ"
-          name="id_prod_typ"
-        />
+        <label for="id_prod_cat">Category product</label>
+        <input type="text" class="form-control" id="id_prod_cat" formControlName="id_prod_cat"
+          [ngClass]="{ 'is-invalid': f['id_prod_cat'].invalid && !firstSubmit}" name="id_prod_cat" required />
+
+        <div *ngIf="f['id_prod_cat'].value.length == 0 && !firstSubmit" style="color: red;">
+          <div>Category product is required</div>
+        </div><br>
       </div>
 
-      <div class="form-group">
-        <label for="prod_desc">Description Product</label>
-        <input
-          class="form-control"
-          id="prod_desc"
-          required
-          [(ngModel)]="product.prod_desc"
-          name="prod_desc"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="precio">Price</label>
-        <input
-          class="form-control"
-          id="precio"
-          required
-          [(ngModel)]="product.precio"
-          name="precio"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="id_prod_cat">Category Product</label>
-        <input
-          class="form-control"
-          id="id_prod_cat"
-          required
-          [(ngModel)]="product.id_prod_cat"
-          name="id_prod_cat"
-        />
-      </div>
-
-      <button (click)="saveProduct()" class="btn btn-success">Submit</button>
-    </div>
-
-    <div *ngIf="submitted">
-      <h4>Product was submitted successfully!</h4>
-      <button class="btn btn-success" (click)="newProduct()">Add</button>
+      <button class="btn btn-success" type="submit">Submit</button>
     </div>
   </div>
-</div>
+</form>
