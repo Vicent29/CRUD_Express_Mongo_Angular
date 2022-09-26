@@ -71,7 +71,7 @@ export class ProductDetailsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.toastrService.success("The "+ this.currentProduct.id_prod_typ +" "+ this.currentProduct.prod_nom + " was updated successfully!");
-          this.message = res.message ? res.message : 'This product was updated successfully!';
+          this.router.navigate(['/product']);
         },
         error: (e) => console.error(e)
       });

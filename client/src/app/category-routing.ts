@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '', component: CategoryListComponent,
   },
   {
-    path: 'add', component: AddCategoryComponent,
+    path: 'add_cat', component: AddCategoryComponent,
   },
   {
     path: ':id', component: CategoryDetailsComponent,

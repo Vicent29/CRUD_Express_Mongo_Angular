@@ -65,7 +65,7 @@ export class CategoryDetailsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.toastrService.success("The "+ this.currentCategory.cat_name +" was updated successfully!");
-          this.message = res.message ? res.message : 'This category was updated successfully!';
+          this.router.navigate(['/category']);
         },
         error: (e) => console.error(e)
       });
